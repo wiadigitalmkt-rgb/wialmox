@@ -99,17 +99,30 @@
                 </a>
             </div>
 
-            <!-- MOCKUP / PRINT DO SISTEMA -->
+            <!-- MOCKUP / EMBED INTERATIVO DO SISTEMA -->
             <div class="relative max-w-5xl mx-auto rounded-2xl p-2 bg-gradient-to-b from-slate-700 to-slate-900 shadow-2xl orange-glow">
                 <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800">
-                    <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center gap-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span class="text-xs text-slate-500 ml-4 font-mono">wiaalmox.app/dashboard</span>
+                    <!-- Browser Bar Top -->
+                    <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            <span class="text-xs text-slate-400 ml-4 font-mono bg-slate-900 px-3 py-1 rounded border border-slate-800">
+                                https://wialmox.vercel.app/demo
+                            </span>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium hidden sm:inline-block">Painel WiaAlmox Live</span>
                     </div>
-                    <!-- Substiua pela imagem real ou mantenha o print enviado -->
-                    <img src="https://wialmox.vercel.app/demo" alt="Painel WiaAlmox" class="w-full h-auto object-cover rounded-b-xl opacity-95 hover:opacity-100 transition-opacity">
+                    <!-- Live iFrame -->
+                    <div class="relative w-full h-[580px] bg-slate-900">
+                        <iframe 
+                            src="https://wialmox.vercel.app/demo" 
+                            title="Painel WiaAlmox Demo" 
+                            class="w-full h-full border-0 rounded-b-xl"
+                            loading="lazy">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -226,7 +239,7 @@
             </div>
 
             <div class="space-y-16">
-                <!-- PRINT 1 -->
+                <!-- FEATURE 1 -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <span class="text-brand-orange font-bold text-sm uppercase">Controle Visual</span>
@@ -240,12 +253,14 @@
                             <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-orange"></i> Importação facilitada de insumos</li>
                         </ul>
                     </div>
-                    <div class="rounded-xl overflow-hidden border border-slate-800 shadow-xl">
-                        <img src="image_81cde4.png" alt="Gerenciamento de Estoque" class="w-full h-auto">
+                    <div class="rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-950 p-2">
+                        <div class="bg-slate-900 rounded-xl overflow-hidden h-72">
+                            <iframe src="https://wialmox.vercel.app/demo" title="Estoque WiaAlmox" class="w-full h-full border-0"></iframe>
+                        </div>
                     </div>
                 </div>
 
-                <!-- PRINT 2 -->
+                <!-- FEATURE 2 -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center lg:flex-row-reverse">
                     <div class="lg:order-2">
                         <span class="text-brand-orange font-bold text-sm uppercase">Rastreio de Saídas</span>
@@ -258,8 +273,10 @@
                             <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-brand-orange"></i> Vínculo com técnicos em campo</li>
                         </ul>
                     </div>
-                    <div class="lg:order-1 rounded-xl overflow-hidden border border-slate-800 shadow-xl">
-                        <img src="image_81cdc5.png" alt="Movimentações" class="w-full h-auto">
+                    <div class="lg:order-1 rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-950 p-2">
+                        <div class="bg-slate-900 rounded-xl overflow-hidden h-72">
+                            <iframe src="https://wialmox.vercel.app/demo" title="Movimentações WiaAlmox" class="w-full h-full border-0"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
