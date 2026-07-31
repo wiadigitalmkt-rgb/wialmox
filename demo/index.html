@@ -16,10 +16,10 @@
             theme: {
                 extend: {
                     colors: {
-                        sidebar: '#162854',
-                        sidebarHover: '#1c3166',
-                        sidebarActive: '#ff8c00',
-                        bgMain: '#f3f4f6',
+                        sidebar: '#0a0f1d',
+                        sidebarHover: '#1e293b',
+                        sidebarActive: '#ef4444',
+                        bgMain: '#f8fafc',
                         cardBg: '#ffffff',
                     },
                     fontFamily: {
@@ -31,7 +31,7 @@
     </script>
     <style>
         .active-menu {
-            background-color: #ff8c00 !important;
+            background-color: #ef4444 !important;
             color: #ffffff !important;
             font-weight: 600;
         }
@@ -43,8 +43,8 @@
     <aside class="w-64 bg-sidebar text-slate-300 flex flex-col justify-between shrink-0 shadow-xl z-20">
         <div>
             <!-- Header/Logo Brand -->
-            <div class="p-5 flex items-center gap-3 border-b border-slate-700/50">
-                <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow">
+            <div class="p-5 flex items-center gap-3 border-b border-slate-800">
+                <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow">
                     <i class="fa-solid fa-wifi"></i>
                 </div>
                 <div>
@@ -91,7 +91,7 @@
         </div>
 
         <!-- User / Footer -->
-        <div class="p-4 border-t border-slate-700/50 text-xs">
+        <div class="p-4 border-t border-slate-800 text-xs">
             <p class="text-slate-400 truncate mb-2">wianettelecomcanoas@gmail.com</p>
             <button onclick="alert('Demo Mode: Sessão de teste não expira.')" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
                 <i class="fa-solid fa-right-from-bracket"></i>
@@ -117,7 +117,7 @@
                         <p class="text-xs text-slate-500 font-medium">Total de Itens</p>
                         <p class="text-2xl font-bold text-slate-900 mt-1">2062</p>
                     </div>
-                    <div class="w-12 h-12 bg-sidebar rounded-xl flex items-center justify-center text-white text-xl">
+                    <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white text-xl">
                         <i class="fa-solid fa-boxes-stacked"></i>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                         <p class="text-xs text-slate-500 font-medium">Alertas de Estoque</p>
                         <p class="text-2xl font-bold text-slate-900 mt-1">13</p>
                     </div>
-                    <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center text-white text-xl">
+                    <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center text-white text-xl">
                         <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
                         <p class="text-xs text-slate-500 font-medium">Mov. Recentes</p>
                         <p class="text-2xl font-bold text-slate-900 mt-1">10</p>
                     </div>
-                    <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white text-xl">
+                    <div class="w-12 h-12 bg-red-500 rounded-xl flex items-center justify-center text-white text-xl">
                         <i class="fa-solid fa-arrows-rotate"></i>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                         <p class="text-xs text-slate-500 font-medium">Veículos</p>
                         <p class="text-2xl font-bold text-slate-900 mt-1">1</p>
                     </div>
-                    <div class="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center text-white text-xl">
+                    <div class="w-12 h-12 bg-rose-600 rounded-xl flex items-center justify-center text-white text-xl">
                         <i class="fa-solid fa-truck"></i>
                     </div>
                 </div>
@@ -190,7 +190,7 @@
                     <button class="bg-white border border-slate-300 text-slate-700 px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50">
                         <i class="fa-solid fa-file-pdf"></i> Exportar PDF
                     </button>
-                    <button onclick="openModal('modal-produto')" class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <button onclick="openModal('modal-produto')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                         <i class="fa-solid fa-plus"></i> Novo Produto
                     </button>
                 </div>
@@ -199,7 +199,7 @@
             <!-- Search Bar -->
             <div class="relative max-w-md">
                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="search-estoque" onkeyup="filterEstoque()" placeholder="Pesquisar produtos ou grupos..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sidebar">
+                <input type="text" id="search-estoque" onkeyup="filterEstoque()" placeholder="Pesquisar produtos ou grupos..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-600">
             </div>
 
             <!-- Table -->
@@ -226,7 +226,7 @@
         <section id="view-veiculos" class="hidden space-y-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-2xl font-bold text-slate-900">Veículos</h2>
-                <button onclick="openModal('modal-veiculo')" class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                <button onclick="openModal('modal-veiculo')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Novo Veículo
                 </button>
             </div>
@@ -248,7 +248,7 @@
                     <div class="text-slate-600">BRANCA</div>
                     <div class="text-slate-600">87.075</div>
                     <div class="text-center">
-                        <span class="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-md">OK</span>
+                        <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-md">OK</span>
                     </div>
                 </div>
             </div>
@@ -258,7 +258,7 @@
         <section id="view-movimentacoes" class="hidden space-y-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-2xl font-bold text-slate-900">Movimentações</h2>
-                <button onclick="openModal('modal-movimentacao')" class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                <button onclick="openModal('modal-movimentacao')" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Nova Movimentação
                 </button>
             </div>
@@ -290,7 +290,7 @@
                     <h2 class="text-2xl font-bold text-slate-900">Comprovantes</h2>
                     <p class="text-xs text-slate-500">Controle de folhas assinadas e documentos diários</p>
                 </div>
-                <button class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                     <i class="fa-solid fa-upload"></i> Enviar Comprovante
                 </button>
             </div>
@@ -309,7 +309,7 @@
                     <div class="col-span-2 text-slate-600">Equipamentos retirados pela equipe Thiago e Eduardo</div>
                     <div class="text-slate-500">03/07/2026 15:05</div>
                     <div class="text-right space-x-2">
-                        <button class="text-slate-600 hover:text-sidebar"><i class="fa-solid fa-download"></i></button>
+                        <button class="text-slate-600 hover:text-red-600"><i class="fa-solid fa-download"></i></button>
                         <button class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button>
                     </div>
                 </div>
@@ -323,7 +323,7 @@
                     <h2 class="text-2xl font-bold text-slate-900">Notas Fiscais</h2>
                     <p class="text-xs text-slate-500">Controle de recebimento de materiais de distribuidoras</p>
                 </div>
-                <button class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Lançar Nota
                 </button>
             </div>
@@ -338,7 +338,7 @@
         <section id="view-pedidos" class="hidden space-y-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-2xl font-bold text-slate-900">Pedidos de Compra</h2>
-                <button class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
                     <i class="fa-solid fa-plus"></i> Novo Pedido
                 </button>
             </div>
@@ -361,14 +361,14 @@
                             <td class="p-4 text-slate-500">as que temos no estoque...</td>
                             <td class="p-4 text-center font-semibold">2</td>
                             <td class="p-4"><span class="bg-rose-100 text-rose-600 px-2.5 py-1 rounded-md text-xs font-bold">Urgente</span></td>
-                            <td class="p-4"><span class="bg-purple-100 text-purple-600 px-2.5 py-1 rounded-md text-xs font-bold">Em Cotação</span></td>
+                            <td class="p-4"><span class="bg-red-100 text-red-600 px-2.5 py-1 rounded-md text-xs font-bold">Em Cotação</span></td>
                             <td class="p-4 text-slate-500">20/06/2026</td>
                         </tr>
                         <tr>
                             <td class="p-4 font-bold text-slate-900">teclado para o computador</td>
                             <td class="p-4 text-slate-500">o que esta instalado fica s...</td>
                             <td class="p-4 text-center font-semibold">1</td>
-                            <td class="p-4"><span class="bg-amber-100 text-amber-600 px-2.5 py-1 rounded-md text-xs font-bold">Alta</span></td>
+                            <td class="p-4"><span class="bg-rose-50 text-rose-600 px-2.5 py-1 rounded-md text-xs font-bold">Alta</span></td>
                             <td class="p-4"><span class="bg-emerald-100 text-emerald-600 px-2.5 py-1 rounded-md text-xs font-bold">Recebido</span></td>
                             <td class="p-4 text-slate-500">10/06/2026</td>
                         </tr>
@@ -407,11 +407,11 @@
             <form onsubmit="handleNewProduct(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Produto</label>
-                    <input type="text" id="prod-nome" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sidebar outline-none">
+                    <input type="text" id="prod-nome" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-red-600 outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Grupo/Categoria</label>
-                    <select id="prod-grupo" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sidebar outline-none">
+                    <select id="prod-grupo" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-red-600 outline-none">
                         <option value="Roteador">Roteador</option>
                         <option value="ONU/ONT">ONU/ONT</option>
                         <option value="Cabo">Cabo</option>
@@ -432,7 +432,7 @@
                 </div>
                 <div class="flex justify-end gap-2 pt-4">
                     <button type="button" onclick="closeModal('modal-produto')" class="px-4 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100">Cancelar</button>
-                    <button type="submit" class="bg-sidebar text-white px-4 py-2 rounded-lg text-sm font-semibold">Salvar Produto</button>
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Salvar Produto</button>
                 </div>
             </form>
         </div>
