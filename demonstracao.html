@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiaAlmox - Sistema de Controle de Estoque ISP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#162854',
+                        sidebarHover: '#1c3166',
+                        sidebarActive: '#ff8c00',
+                        bgMain: '#f3f4f6',
+                        cardBg: '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .active-menu {
+            background-color: #ff8c00 !important;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-bgMain text-slate-800 font-sans flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR LEFT -->
+    <aside class="w-64 bg-sidebar text-slate-300 flex flex-col justify-between shrink-0 shadow-xl z-20">
+        <div>
+            <!-- Header/Logo Brand -->
+            <div class="p-5 flex items-center gap-3 border-b border-slate-700/50">
+                <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white font-extrabold text-xl shadow">
+                    <i class="fa-solid fa-wifi"></i>
+                </div>
+                <div>
+                    <h1 class="text-white font-bold text-base leading-tight">Controle de</h1>
+                    <h2 class="text-white font-extrabold text-sm leading-tight">Estoque ISP</h2>
+                </div>
+            </div>
+
+            <!-- Menus -->
+            <nav class="p-3 space-y-1 text-sm font-medium">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left active-menu">
+                    <i class="fa-solid fa-border-all w-5"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchTab('estoque')" id="nav-estoque" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-box w-5"></i>
+                    <span>Estoque</span>
+                </button>
+                <button onclick="switchTab('veiculos')" id="nav-veiculos" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-truck-pickup w-5"></i>
+                    <span>Veículos</span>
+                </button>
+                <button onclick="switchTab('movimentacoes')" id="nav-movimentacoes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-right-left w-5"></i>
+                    <span>Movimentações</span>
+                </button>
+                <button onclick="switchTab('comprovantes')" id="nav-comprovantes" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-file-lines w-5"></i>
+                    <span>Comprovantes</span>
+                </button>
+                <button onclick="switchTab('notas')" id="nav-notas" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-file-invoice-dollar w-5"></i>
+                    <span>Notas Fiscais</span>
+                </button>
+                <button onclick="switchTab('pedidos')" id="nav-pedidos" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-cart-shopping w-5"></i>
+                    <span>Pedidos de Compra</span>
+                </button>
+                <button onclick="switchTab('logs')" id="nav-logs" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all hover:bg-sidebarHover text-left">
+                    <i class="fa-solid fa-clipboard-check w-5"></i>
+                    <span>Logs de Auditoria</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- User / Footer -->
+        <div class="p-4 border-t border-slate-700/50 text-xs">
+            <p class="text-slate-400 truncate mb-2">wianettelecomcanoas@gmail.com</p>
+            <button onclick="alert('Demo Mode: Sessão de teste não expira.')" class="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sair</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 overflow-y-auto p-8">
+
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="view-dashboard" class="space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900">Bem-vindo, Wianet Admin!</h2>
+                <p class="text-sm text-slate-500">Painel de controle do estoque</p>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-cardBg p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Total de Itens</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">2062</p>
+                    </div>
+                    <div class="w-12 h-12 bg-sidebar rounded-xl flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </div>
+                </div>
+
+                <div class="bg-cardBg p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Valor Investido</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">R$ 50.764,71</p>
+                    </div>
+                    <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                    </div>
+                </div>
+
+                <div class="bg-cardBg p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Alertas de Estoque</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">13</p>
+                    </div>
+                    <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+
+                <div class="bg-cardBg p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Mov. Recentes</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">10</p>
+                    </div>
+                    <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </div>
+                </div>
+
+                <div class="bg-cardBg p-5 rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">Veículos</p>
+                        <p class="text-2xl font-bold text-slate-900 mt-1">1</p>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-500 rounded-xl flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-truck"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estoque Mínimo Card Box -->
+            <div class="bg-rose-50/50 border border-rose-200/80 rounded-2xl p-6">
+                <div class="flex items-center gap-2 text-rose-600 font-bold mb-4 text-sm">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Grupos Abaixo do Estoque Mínimo</span>
+                </div>
+
+                <div id="alert-list" class="space-y-2">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ESTOQUE VIEW -->
+        <section id="view-estoque" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h2 class="text-2xl font-bold text-slate-900">Gerenciamento de Estoque</h2>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button class="bg-white border border-slate-300 text-slate-700 px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50">
+                        <i class="fa-solid fa-sliders"></i> Grupos
+                    </button>
+                    <button class="bg-white border border-slate-300 text-slate-700 px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50">
+                        <i class="fa-solid fa-upload"></i> Importar
+                    </button>
+                    <button class="bg-white border border-slate-300 text-slate-700 px-3 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 hover:bg-slate-50">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button onclick="openModal('modal-produto')" class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Novo Produto
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative max-w-md">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="search-estoque" onkeyup="filterEstoque()" placeholder="Pesquisar produtos ou grupos..." class="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sidebar">
+            </div>
+
+            <!-- Table -->
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                            <th class="p-4">Código / Nome</th>
+                            <th class="p-4">Grupo</th>
+                            <th class="p-4 text-center">Qtd</th>
+                            <th class="p-4 text-right">Preço Unit.</th>
+                            <th class="p-4 text-right">Valor Total</th>
+                            <th class="p-4 text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-estoque" class="divide-y divide-slate-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 3. VEÍCULOS VIEW -->
+        <section id="view-veiculos" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-slate-900">Veículos</h2>
+                <button onclick="openModal('modal-veiculo')" class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Novo Veículo
+                </button>
+            </div>
+
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 p-4 shadow-sm">
+                <div class="grid grid-cols-6 font-semibold text-slate-600 border-b border-slate-200 pb-3 text-sm">
+                    <div>Placa</div>
+                    <div class="col-span-2">Veículo</div>
+                    <div>Cor</div>
+                    <div>KM Atual</div>
+                    <div class="text-center">Status Óleo</div>
+                </div>
+                <div class="grid grid-cols-6 items-center pt-4 text-sm font-medium">
+                    <div class="font-bold text-slate-900">GGV8D93</div>
+                    <div class="col-span-2">
+                        <p class="font-semibold text-slate-800">CHEVROLET/ONIX 1.0MT JOYE ONIX</p>
+                        <p class="text-xs text-slate-400">2018</p>
+                    </div>
+                    <div class="text-slate-600">BRANCA</div>
+                    <div class="text-slate-600">87.075</div>
+                    <div class="text-center">
+                        <span class="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-md">OK</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. MOVIMENTAÇÕES VIEW -->
+        <section id="view-movimentacoes" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-slate-900">Movimentações</h2>
+                <button onclick="openModal('modal-movimentacao')" class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Nova Movimentação
+                </button>
+            </div>
+
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                            <th class="p-4">Data</th>
+                            <th class="p-4">Tipo</th>
+                            <th class="p-4">Produto</th>
+                            <th class="p-4 text-center">Qtd</th>
+                            <th class="p-4">Retirado por</th>
+                            <th class="p-4">Destino</th>
+                            <th class="p-4">Finalidade</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-movimentacoes" class="divide-y divide-slate-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 5. COMPROVANTES VIEW -->
+        <section id="view-comprovantes" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Comprovantes</h2>
+                    <p class="text-xs text-slate-500">Controle de folhas assinadas e documentos diários</p>
+                </div>
+                <button class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-upload"></i> Enviar Comprovante
+                </button>
+            </div>
+
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 p-4 shadow-sm">
+                <div class="grid grid-cols-6 font-semibold text-slate-600 border-b border-slate-200 pb-3 text-sm">
+                    <div>Data Doc.</div>
+                    <div>Enviado por</div>
+                    <div class="col-span-2">Descrição</div>
+                    <div>Enviado em</div>
+                    <div class="text-right">Ações</div>
+                </div>
+                <div class="grid grid-cols-6 items-center pt-4 text-sm font-medium">
+                    <div>03/07/2026</div>
+                    <div>Daniel Wianet</div>
+                    <div class="col-span-2 text-slate-600">Equipamentos retirados pela equipe Thiago e Eduardo</div>
+                    <div class="text-slate-500">03/07/2026 15:05</div>
+                    <div class="text-right space-x-2">
+                        <button class="text-slate-600 hover:text-sidebar"><i class="fa-solid fa-download"></i></button>
+                        <button class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. NOTAS FISCAIS VIEW -->
+        <section id="view-notas" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Notas Fiscais</h2>
+                    <p class="text-xs text-slate-500">Controle de recebimento de materiais de distribuidoras</p>
+                </div>
+                <button class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Lançar Nota
+                </button>
+            </div>
+
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 p-12 text-center text-slate-400">
+                <i class="fa-solid fa-file-invoice text-4xl mb-3"></i>
+                <p>Nenhuma nota fiscal lançada até o momento.</p>
+            </div>
+        </section>
+
+        <!-- 7. PEDIDOS DE COMPRA VIEW -->
+        <section id="view-pedidos" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold text-slate-900">Pedidos de Compra</h2>
+                <button class="bg-sidebar hover:bg-sidebarHover text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Novo Pedido
+                </button>
+            </div>
+
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                            <th class="p-4">Material</th>
+                            <th class="p-4">Descrição</th>
+                            <th class="p-4 text-center">Qtd</th>
+                            <th class="p-4">Prioridade</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4">Data</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-4 font-bold text-slate-900">bobina drop</td>
+                            <td class="p-4 text-slate-500">as que temos no estoque...</td>
+                            <td class="p-4 text-center font-semibold">2</td>
+                            <td class="p-4"><span class="bg-rose-100 text-rose-600 px-2.5 py-1 rounded-md text-xs font-bold">Urgente</span></td>
+                            <td class="p-4"><span class="bg-purple-100 text-purple-600 px-2.5 py-1 rounded-md text-xs font-bold">Em Cotação</span></td>
+                            <td class="p-4 text-slate-500">20/06/2026</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-bold text-slate-900">teclado para o computador</td>
+                            <td class="p-4 text-slate-500">o que esta instalado fica s...</td>
+                            <td class="p-4 text-center font-semibold">1</td>
+                            <td class="p-4"><span class="bg-amber-100 text-amber-600 px-2.5 py-1 rounded-md text-xs font-bold">Alta</span></td>
+                            <td class="p-4"><span class="bg-emerald-100 text-emerald-600 px-2.5 py-1 rounded-md text-xs font-bold">Recebido</span></td>
+                            <td class="p-4 text-slate-500">10/06/2026</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 8. LOGS DE AUDITORIA VIEW -->
+        <section id="view-logs" class="hidden space-y-6">
+            <h2 class="text-2xl font-bold text-slate-900">Logs de Auditoria</h2>
+
+            <div class="bg-cardBg rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                            <th class="p-4">Data/Hora</th>
+                            <th class="p-4">Usuário</th>
+                            <th class="p-4">Ação</th>
+                            <th class="p-4">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-logs" class="divide-y divide-slate-100">
+                        <!-- Populated via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL NOVO PRODUTO -->
+    <div id="modal-produto" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <h3 class="text-xl font-bold mb-4">Novo Produto</h3>
+            <form onsubmit="handleNewProduct(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Nome do Produto</label>
+                    <input type="text" id="prod-nome" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sidebar outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Grupo/Categoria</label>
+                    <select id="prod-grupo" class="w-full border border-slate-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-sidebar outline-none">
+                        <option value="Roteador">Roteador</option>
+                        <option value="ONU/ONT">ONU/ONT</option>
+                        <option value="Cabo">Cabo</option>
+                        <option value="Ferragem">Ferragem</option>
+                        <option value="Caixa de Emenda">Caixa de Emenda</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Quantidade</label>
+                        <input type="number" id="prod-qtd" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Estoque Mínimo</label>
+                        <input type="number" id="prod-min" required class="w-full border border-slate-300 rounded-lg p-2.5 text-sm outline-none">
+                    </div>
+                </div>
+                <div class="flex justify-end gap-2 pt-4">
+                    <button type="button" onclick="closeModal('modal-produto')" class="px-4 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100">Cancelar</button>
+                    <button type="submit" class="bg-sidebar text-white px-4 py-2 rounded-lg text-sm font-semibold">Salvar Produto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Data State
+        let stockData = [
+            { id: '1', name: 'ROTEADOR INTELBRAS 4 ANTENAS', group: 'Roteador', qtd: 9, min: 3, price: 150 },
+            { id: '2', name: 'ROTEADOR TPLINK', group: 'Roteador', qtd: 49, min: 5, price: 112.8 },
+            { id: '3', name: 'ROTEADOR TENDA', group: 'Roteador', qtd: 1, min: 3, price: 80 },
+            { id: '4', name: 'ROTEADOR DLINK', group: 'Roteador', qtd: 2, min: 3, price: 80 },
+            { id: '5', name: 'ONT STAVIX APC', group: 'ONU/ONT', qtd: 48, min: 5, price: 79.79 },
+            { id: '6', name: 'LUVA', group: 'Ferragem', qtd: 1, min: 3, price: 10 },
+            { id: '7', name: 'CTO CONDOMINIO', group: 'CTO', qtd: 3, min: 3, price: 120 },
+            { id: '8', name: 'CABO DE REDE', group: 'Cabo', qtd: 1, min: 1, price: 200 }
+        ];
+
+        let movementsData = [
+            { date: '17/07/2026 14:45', type: 'Entrada', item: '386B1CD35123 - roteador mercusys', qtd: 1, tech: '—', dest: '—', reason: '—' },
+            { date: '14/07/2026 12:35', type: 'Saída', item: 'CONECTOR DE ROSCA FIBRATECH APC', qtd: 2, tech: 'Eduardo', dest: 'instalacao', reason: 'para efetuar a instalacao' },
+            { date: '13/07/2026 18:40', type: 'Saída', item: 'onu intelbras apc R1', qtd: 1, tech: 'Thiago', dest: 'reserva', reason: 'para reserva' }
+        ];
+
+        let logsData = [
+            { date: '30/07/2026 19:48:51', user: 'Daniel Wianet', action: 'Criou produto', detail: '001A3F926ADD' },
+            { date: '30/07/2026 19:39:31', user: 'Daniel Wianet', action: 'Criou produto', detail: '24FD0D1F4284' }
+        ];
+
+        // Navigation Switcher
+        function switchTab(tab) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-menu'));
+            
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).classList.add('active-menu');
+        }
+
+        // Render estoque table
+        function renderEstoque(items = stockData) {
+            const tbody = document.getElementById('table-estoque');
+            tbody.innerHTML = '';
+
+            items.forEach(item => {
+                const total = (item.qtd * item.price).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                const priceFormatted = item.price ? item.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '—';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50">
+                        <td class="p-4 font-bold text-slate-900">${item.name}</td>
+                        <td class="p-4"><span class="bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md text-xs font-semibold">${item.group}</span></td>
+                        <td class="p-4 text-center font-extrabold ${item.qtd <= item.min ? 'text-rose-600' : 'text-slate-800'}">${item.qtd}</td>
+                        <td class="p-4 text-right text-slate-600">${priceFormatted}</td>
+                        <td class="p-4 text-right font-bold text-slate-900">${total}</td>
+                        <td class="p-4 text-center space-x-2">
+                            <button onclick="deleteProduct('${item.id}')" class="text-rose-500 hover:text-rose-700"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render Dashboard Alerts
+        function renderDashboardAlerts() {
+            const alertList = document.getElementById('alert-list');
+            alertList.innerHTML = '';
+            
+            const lowStock = stockData.filter(i => i.qtd <= i.min);
+
+            lowStock.forEach(item => {
+                alertList.innerHTML += `
+                    <div class="bg-white p-3 rounded-xl border border-rose-100 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-slate-800">${item.name}</span>
+                            <span class="bg-rose-100 text-rose-600 px-2 py-0.5 rounded font-semibold">${item.group}</span>
+                        </div>
+                        <span class="font-bold text-rose-600">Qtd total: ${item.qtd} / Mín: ${item.min}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Render Movimentacoes Table
+        function renderMovimentacoes() {
+            const tbody = document.getElementById('table-movimentacoes');
+            tbody.innerHTML = '';
+
+            movementsData.forEach(mov => {
+                const badge = mov.type === 'Entrada' 
+                    ? '<span class="bg-emerald-100 text-emerald-600 px-2 py-1 rounded-md text-xs font-bold"><i class="fa-solid fa-arrow-down"></i> Entrada</span>'
+                    : '<span class="bg-rose-100 text-rose-600 px-2 py-1 rounded-md text-xs font-bold"><i class="fa-solid fa-arrow-up"></i> Saída</span>';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-4 text-slate-500 text-xs">${mov.date}</td>
+                        <td class="p-4">${badge}</td>
+                        <td class="p-4 font-bold text-slate-900">${mov.item}</td>
+                        <td class="p-4 text-center font-bold">${mov.qtd}</td>
+                        <td class="p-4 text-slate-700">${mov.tech}</td>
+                        <td class="p-4 text-slate-700">${mov.dest}</td>
+                        <td class="p-4 text-slate-500 text-xs">${mov.reason}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render Logs
+        function renderLogs() {
+            const tbody = document.getElementById('table-logs');
+            tbody.innerHTML = '';
+
+            logsData.forEach(log => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-4 text-slate-500 text-xs">${log.date}</td>
+                        <td class="p-4 font-semibold text-slate-800">${log.user}</td>
+                        <td class="p-4 font-bold text-slate-900">${log.action}</td>
+                        <td class="p-4 font-mono text-xs text-slate-600">${log.detail}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Modal Handlers
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function handleNewProduct(e) {
+            e.preventDefault();
+            const name = document.getElementById('prod-nome').value;
+            const group = document.getElementById('prod-grupo').value;
+            const qtd = parseInt(document.getElementById('prod-qtd').value);
+            const min = parseInt(document.getElementById('prod-min').value);
+
+            const newProd = { id: Date.now().toString(), name, group, qtd, min, price: 100 };
+            stockData.unshift(newProd);
+            
+            logsData.unshift({
+                date: new Date().toLocaleString('pt-BR'),
+                user: 'Daniel Wianet',
+                action: 'Criou produto',
+                detail: name
+            });
+
+            renderEstoque();
+            renderDashboardAlerts();
+            renderLogs();
+            closeModal('modal-produto');
+            e.target.reset();
+        }
+
+        function deleteProduct(id) {
+            if(confirm('Deseja realmente remover este produto do estoque?')) {
+                stockData = stockData.filter(i => i.id !== id);
+                renderEstoque();
+                renderDashboardAlerts();
+            }
+        }
+
+        function filterEstoque() {
+            const term = document.getElementById('search-estoque').value.toLowerCase();
+            const filtered = stockData.filter(i => i.name.toLowerCase().includes(term) || i.group.toLowerCase().includes(term));
+            renderEstoque(filtered);
+        }
+
+        // Init App
+        window.onload = () => {
+            renderEstoque();
+            renderDashboardAlerts();
+            renderMovimentacoes();
+            renderLogs();
+        };
+    </script>
+</body>
+</html>
